@@ -1,0 +1,62 @@
+{
+  "variables": {
+      "aws_profile": "osbuild-personal",
+      "region":      "us-east-1",
+      "distro":      "fedora33",
+      "arch":        "arm64",
+      "name":        "osbuild-jenkins-{{user `distro`}}-{{user `arch`}}"
+  },
+  "builders": [
+      {
+          "ami_name": "{{user `name`}}-{{timestamp}}",
+          "region": "{{user `region`}}",
+          "profile": "{{user `aws_profile`}}",
+          "source_ami_filter": {
+            "filters": {
+              "virtualization-type": "hvm",
+              "name": "Fedora-Cloud-Base-Rawhide*",
+              "root-device-type": "ebs",
+              "architecture": "{{user `arch`}}"
+            },
+            "owners": ["125523088429"],
+            "most_recent": true
+          },
+          "ssh_username": "fedora",
+          "type": "amazon-ebs",
+          "associate_public_ip_address": true,
+          "ssh_interface": "public_ip",
+          "security_group_ids": [
+            "sg-0ff22a7fd4f8b2637"
+          ],
+          "run_tags": {
+            "Name": "{{user `name`}}"
+          },
+          "tags":{
+            "Name": "{{user `name`}}-{{timestamp}}"
+          },
+          "launch_block_device_mappings": [
+            {
+              "device_name": "/dev/sda1",
+              "delete_on_termination": "true",
+              "volume_type": "gp2",
+              "volume_size": 25
+            }
+          ],
+          "instance_type": "a1.xlarge"
+      }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "prepare.sh",
+      "destination": "/tmp/prepare.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /tmp/prepare.sh",
+        "rm -f /tmp/prepare.sh"
+      ]
+    }
+  ]
+}
