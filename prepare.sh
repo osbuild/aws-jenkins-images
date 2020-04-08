@@ -20,7 +20,8 @@ dnf -y upgrade
 
 # Install required packages for Jenkins and other jobs.
 dnf -y install ansible awscli buildah dnf-plugins-core git grubby htop \
-  java-1.8.0-openjdk-headless podman python3 python3-pip rpm-build runc vim
+  java-1.8.0-openjdk-headless podman policycoreutils-python-utils python3 \
+  python3-pip rpm-build runc vim
 
 # Prepare for the Docker installation.
 grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
@@ -35,6 +36,17 @@ fi
 # Install Docker.
 dnf -y install docker-ce docker-ce-cli containerd.io
 systemctl enable docker
+
+# Set up swap.
+fallocate -l 1G /swapfile
+chmod 0600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+
+# Switch ssh to port 2222.
+sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
+semanage port -a -t ssh_port_t -p tcp 2222
 
 # Clean up.
 dnf -y clean all

@@ -1,7 +1,7 @@
 {
   "variables": {
       "aws_profile": "osbuild-personal",
-      "region":      "us-east-1",
+      "region":      "us-east-2",
       "distro":      "fedora32",
       "arch":        "arm64",
       "name":        "osbuild-jenkins-{{user `distro`}}-{{user `arch`}}"

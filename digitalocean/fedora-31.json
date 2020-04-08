@@ -1,0 +1,31 @@
+{
+  "builders": [
+      {
+        "type": "digitalocean",
+        "image": "61435714",
+        "region": "nyc3",
+        "size": "s-1vcpu-1gb",
+        "ssh_username": "root",
+        "droplet_name": "packer-fedora-31-{{isotime \"20060102\"}}",
+        "snapshot_name": "packer-fedora-31-{{isotime \"20060102\"}}",
+        "snapshot_regions": [
+          "nyc1",
+          "nyc3"
+        ]
+      }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "prepare.sh",
+      "destination": "/tmp/prepare.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /tmp/prepare.sh",
+        "rm -f /tmp/prepare.sh"
+      ]
+    }
+  ]
+}
