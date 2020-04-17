@@ -23,6 +23,14 @@ dnf -y install ansible awscli buildah dnf-plugins-core git grubby htop \
   java-1.8.0-openjdk-headless podman policycoreutils-python-utils python3 \
   python3-pip rpm-build runc vim
 
+# Ensure build dependencies for osbuild and osbuild-composer are included.
+curl -o /tmp/osbuild-composer.spec \
+  https://raw.githubusercontent.com/osbuild/osbuild-composer/master/osbuild-composer.spec
+curl -o /tmp/osbuild.spec \
+  https://raw.githubusercontent.com/osbuild/osbuild/master/osbuild.spec
+dnf -y builddep /tmp/osbuild-composer.spec /tmp/osbuild.spec
+rm -fv /tmp/*.spec
+
 # Prepare for the Docker installation.
 grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
 dnf -y config-manager \
