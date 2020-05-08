@@ -24,13 +24,13 @@ pipeline {
 
                 stage("Fedora 31") {
                     steps {
-                        sh "packer build openstack/fedora31.json"
+                        sh "packer.io build openstack/fedora31.json"
                     }
                 }
 
                 stage("Fedora 32") {
                     steps {
-                        sh "packer build openstack/fedora31.json"
+                        sh "packer.io build openstack/fedora31.json"
                     }
                 }
 
