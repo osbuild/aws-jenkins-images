@@ -11,6 +11,9 @@ pipeline {
         stage("PSI Images") {
             // Set the agent here in this stage so run all of the builds in
             // the same agent.
+            environment {
+                OPENSTACK_CLOUDS_YAML = credentials("psi-openstack-clouds-yaml")
+            }
             steps {
                 sh "schutzbot/packer_install.sh"
             }

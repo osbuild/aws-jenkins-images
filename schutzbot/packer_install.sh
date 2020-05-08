@@ -13,3 +13,6 @@ pushd /tmp
   sudo cp packer /usr/bin/packer.io
   sudo chmod +x /usr/bin/packer.io
 popd
+
+mkdir -p /etc/openstack
+cp $OPENSTACK_CLOUDS_YAML /etc/openstack/clouds.yaml
