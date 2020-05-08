@@ -14,5 +14,5 @@ pushd /tmp
   sudo chmod +x /usr/bin/packer.io
 popd
 
-mkdir -p /etc/openstack
-cp $OPENSTACK_CLOUDS_YAML /etc/openstack/clouds.yaml
+sudo mkdir -p /etc/openstack
+sudo cp $OPENSTACK_CLOUDS_YAML /etc/openstack/clouds.yaml
