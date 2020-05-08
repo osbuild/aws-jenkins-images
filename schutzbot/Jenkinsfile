@@ -12,11 +12,8 @@ pipeline {
             // Set the agent here in this stage so run all of the builds in
             // the same agent.
             agent { label "fedora3 || fedora32" }
-
-            stage("Install packer") {
-                steps {
-                    sh "schutzbot/packer_install.sh"
-                }
+            steps {
+                sh "schutzbot/packer_install.sh"
             }
 
             stage("Build images") {
