@@ -1,0 +1,31 @@
+{
+    "builders": [
+        {
+            "type": "openstack",
+            "identity_endpoint": "https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3",
+            "cloud": "psi",
+            "image_name": "osbuildci-rhel-82-{{isotime \"20060102\"}}",
+            "source_image": "0267b72f-9ea7-40a5-8526-565d9c130b7f",
+            "flavor": "m1.small",
+            "image_visibility": "private",
+            "networks": [
+                "316eeb47-1498-46b4-b39e-00ddf73bd2a5"
+            ],
+            "ssh_username": "cloud-user"
+        }
+    ],
+    "provisioners": [
+      {
+        "type": "file",
+        "source": "prepare.sh",
+        "destination": "/tmp/prepare.sh"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "sudo /tmp/prepare.sh",
+          "rm -f /tmp/prepare.sh"
+        ]
+      }
+    ]
+}

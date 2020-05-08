@@ -2,7 +2,7 @@
   "builders": [
       {
         "type": "digitalocean",
-        "image": "61435734",
+        "image": "62820725",
         "region": "nyc3",
         "size": "s-1vcpu-1gb",
         "ssh_username": "root",
