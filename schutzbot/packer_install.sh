@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-if [[ ! -x /usr/bin/unzip ]];
+if [[ ! -x /usr/bin/unzip ]]; then
   dnf -qy install unzip
 fi
 
