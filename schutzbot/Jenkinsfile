@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent { label "fedora3 || fedora32" }
 
     options {
         timestamps()
@@ -15,25 +15,25 @@ pipeline {
             steps {
                 sh "schutzbot/packer_install.sh"
             }
+        }
 
-            stage("Build images") {
+        stage("Build images") {
 
-                // Build the images in parallel.
-                parallel {
+            // Build the images in parallel.
+            parallel {
 
-                    stage("Fedora 31") {
-                        steps {
-                            sh "packer build openstack/fedora31.json"
-                        }
+                stage("Fedora 31") {
+                    steps {
+                        sh "packer build openstack/fedora31.json"
                     }
-
-                    stage("Fedora 32") {
-                        steps {
-                            sh "packer build openstack/fedora31.json"
-                        }
-                    }
-
                 }
+
+                stage("Fedora 32") {
+                    steps {
+                        sh "packer build openstack/fedora31.json"
+                    }
+                }
+
             }
         }
     }
