@@ -28,10 +28,10 @@ if [[ $PLATFORM_ID == "platform:el8" ]]; then
 fi
 
 # Upgrade system.
-dnf ${DNF_EXTRA_ARGS:-} -y upgrade
+dnf ${DNF_EXTRA_ARGS:-} -qy upgrade
 
 # Install required packages for Jenkins and other jobs.
-dnf ${DNF_EXTRA_ARGS:-} -y install \
+dnf ${DNF_EXTRA_ARGS:-} -qy install \
   ansible buildah dnf-plugins-core git htop java-1.8.0-openjdk-headless make \
   podman policycoreutils-python-utils python3 python3-pip rpm-build vi vim xz
 
