@@ -16,3 +16,4 @@ popd
 
 sudo mkdir -p /etc/openstack
 sudo cp $OPENSTACK_CLOUDS_YAML /etc/openstack/clouds.yaml
+sudo chmod 0644 /etc/openstack/clouds.yaml
