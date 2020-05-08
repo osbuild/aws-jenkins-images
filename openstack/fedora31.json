@@ -4,7 +4,7 @@
             "type": "openstack",
             "identity_endpoint": "https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3",
             "cloud": "psi",
-            "image_name": "osbuildci-fedora-31-{{isotime \"20060102\"}}",
+            "image_name": "osbuildci-fedora-31-{{isotime \"20060102 15:04:05\"}}",
             "source_image": "e45b4746-cd27-401f-96e3-2f47f1977e77",
             "flavor": "m1.small",
             "image_visibility": "private",
