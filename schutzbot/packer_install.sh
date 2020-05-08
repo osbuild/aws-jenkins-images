@@ -10,6 +10,6 @@ curl --retry 5 -Lso /tmp/packer.zip \
 
 pushd /tmp
   unzip packer.zip
-  sudo cp packer /usr/local/bin/packer.io
-  sudo chmod +x /usr/local/bin/packer.io
+  sudo cp packer /usr/bin/packer.io
+  sudo chmod +x /usr/bin/packer.io
 popd
