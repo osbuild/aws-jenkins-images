@@ -1,3 +1,4 @@
+// Define the jobs for building VM images for CI.
 pipeline {
     agent { label "fedora3 || fedora32" }
 
@@ -33,6 +34,18 @@ pipeline {
                 stage("Fedora 32") {
                     steps {
                         sh "packer.io build openstack/fedora31.json"
+                    }
+                }
+
+                stage("RHEL 8.2") {
+                    steps {
+                        sh "packer.io build openstack/rhel82.json"
+                    }
+                }
+
+                stage("RHEL 8.3") {
+                    steps {
+                        sh "packer.io build openstack/rhel83.json"
                     }
                 }
 
