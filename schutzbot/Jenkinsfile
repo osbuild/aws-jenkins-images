@@ -37,14 +37,13 @@ pipeline {
                 }
 
             }
-        }
 
-    post {
-        always {
-            // Always clean up credentials.
-            sh "rm -rf /etc/openstack"
+            post {
+                always {
+                    // Always clean up credentials.
+                    sh "rm -rf /etc/openstack"
+                }
+            }
         }
-    }
-
     }
 }
