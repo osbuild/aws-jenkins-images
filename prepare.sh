@@ -9,6 +9,12 @@ echo "fastestmirror=1" >> /etc/dnf/dnf.conf
 echo "install_weak_deps=0" >> /etc/dnf/dnf.conf
 rm -fv /etc/yum.repos.d/fedora*modular*
 
+# If we are in PSI, disable IPv6 to avoid routing problems.
+if ! curl -s --fail https://gitlab.cee.redhat.com 2>&1 > /dev/null; then
+  sysctl -w net.ipv6.conf.all.disable_ipv6=1
+  echo "net.ipv6.conf.all.disable_ipv6=1" | tee /etc/sysctl.d/50-disable-ipv6.conf
+fi
+
 # Disable sssd as it's not needed.
 systemctl disable --now sssd
 
