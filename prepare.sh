@@ -52,6 +52,12 @@ echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 mkdir /jenkins
 chmod 0777 /jenkins
 
+# Ensure /tmp is mounted on tmpfs.
+systemctl enable tmp.mount || systemctl unmask tmp.mount && systemctl start tmp.mount
+
+# Ensure modular repositories are removed.
+rm -fv /etc/yum.repos.d/fedora*modular*
+
 # Switch ssh to port 2222.
 # sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
 # semanage port -a -t ssh_port_t -p tcp 2222
