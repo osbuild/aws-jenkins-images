@@ -21,10 +21,10 @@ systemctl disable --now sssd
 # Download RHEL 8 repositories if needed.
 if [[ $PLATFORM_ID == "platform:el8" ]]; then
   if [[ $VERSION_ID == "8.2" ]]; then
-    curl --retry 5 -kLso /etc/yum.repos.d/rhel82.repo \
+    curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
       https://gitlab.cee.redhat.com/snippets/2143/raw
   elif [[ $VERSION_ID == "8.3" ]]; then
-    curl --retry 5 -kLso /etc/yum.repos.d/rhel83.repo \
+    curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
       https://gitlab.cee.redhat.com/snippets/2147/raw
   fi
   curl --retry 5 -Lso /tmp/epel8.rpm \
@@ -38,9 +38,19 @@ dnf ${DNF_EXTRA_ARGS:-} -qy upgrade
 
 # Install required packages for Jenkins and other jobs.
 dnf ${DNF_EXTRA_ARGS:-} -qy install \
-  ansible buildah dnf-plugins-core git htop java-1.8.0-openjdk-headless make \
-  mock podman policycoreutils-python-utils python3 python3-pip rpm-build vi \
-  vim xz
+  ansible buildah createrepo_c dnf-plugins-core git htop \
+  java-1.8.0-openjdk-headless make mock podman policycoreutils-python-utils \
+  python3 python3-pip rpm-build vi vim xz
+
+# Prepare the mock chroot.
+if [[ $PLATFORM_ID == "platform:el8" ]]; then
+  mv /tmp/rhel-8.tpl /etc/mock/templates/rhel-8.tpl
+  cat /etc/yum.repos.d/rhel8.repo | tee -a /etc/mock/templates/rhel-8.tpl
+  echo '"""' | tee -a /etc/mock/templates/rhel-8.tpl
+  export VERSION_ID=8
+  cat /etc/mock/templates/rhel-8.tpl
+fi
+mock -r "${ID}-${VERSION_ID}-$(uname -m)" --no-bootstrap-chroot --init
 
 # Set up swap.
 fallocate -l 1G /swapfile

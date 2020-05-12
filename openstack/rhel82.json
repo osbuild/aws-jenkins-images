@@ -6,7 +6,7 @@
             "cloud": "psi",
             "image_name": "osbuildci-rhel-82-{{isotime \"20060102-150405\"}}",
             "source_image": "0267b72f-9ea7-40a5-8526-565d9c130b7f",
-            "flavor": "m1.small",
+            "flavor": "ci.m1.large",
             "image_visibility": "private",
             "networks": [
                 "316eeb47-1498-46b4-b39e-00ddf73bd2a5"
@@ -19,6 +19,11 @@
         "type": "file",
         "source": "prepare.sh",
         "destination": "/tmp/prepare.sh"
+      },
+      {
+        "type": "file",
+        "source": "files/rhel-8.tpl",
+        "destination": "/tmp/rhel-8.tpl"
       },
       {
         "type": "shell",
