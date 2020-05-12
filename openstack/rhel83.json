@@ -6,7 +6,7 @@
             "cloud": "psi",
             "image_name": "osbuildci-rhel-83-{{isotime \"20060102-150405\"}}",
             "source_image": "15453c65-91de-4cf1-9f41-06f599d2be1f",
-            "flavor": "m1.small",
+            "flavor": "ci.m1.small",
             "image_visibility": "private",
             "networks": [
                 "316eeb47-1498-46b4-b39e-00ddf73bd2a5"
