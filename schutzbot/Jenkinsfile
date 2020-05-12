@@ -11,7 +11,6 @@ pipeline {
         cron 'H 5 * * 1-5'
     }
 
-
     stages {
 
         stage("PSI Images") {
@@ -28,6 +27,7 @@ pipeline {
         stage("Build images") {
 
             // Build the images in parallel.
+            failFast true
             parallel {
 
                 stage("Fedora 31") {

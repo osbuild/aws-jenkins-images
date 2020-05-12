@@ -21,6 +21,11 @@
         "destination": "/tmp/prepare.sh"
       },
       {
+        "type": "file",
+        "source": "files/rhel-8.tpl",
+        "destination": "/tmp/rhel-8.tpl"
+      },
+      {
         "type": "shell",
         "inline": [
           "sudo /tmp/prepare.sh",
