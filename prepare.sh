@@ -7,7 +7,7 @@ source /etc/os-release
 # Configure dnf.
 echo "fastestmirror=1" >> /etc/dnf/dnf.conf
 echo "install_weak_deps=0" >> /etc/dnf/dnf.conf
-rm -fv /etc/yum.repos.d/fedora*modular*
+rm -f /etc/yum.repos.d/fedora*modular*
 
 # If we are in PSI, disable IPv6 to avoid routing problems.
 if ! curl -s --fail https://gitlab.cee.redhat.com 2>&1 > /dev/null; then
@@ -29,8 +29,8 @@ if [[ $PLATFORM_ID == "platform:el8" ]]; then
   fi
   curl --retry 5 -Lso /tmp/epel8.rpm \
     https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-  rpm -Uvh /tmp/epel8.rpm
-  rm -fv /tmp/epel8.rpm
+  rpm -Uvh --quiet /tmp/epel8.rpm
+  rm -f /tmp/epel8.rpm
 fi
 
 # Upgrade system.
@@ -72,7 +72,7 @@ chmod 0777 /jenkins
 systemctl enable tmp.mount || systemctl unmask tmp.mount && systemctl start tmp.mount
 
 # Ensure modular repositories are removed.
-rm -fv /etc/yum.repos.d/fedora*modular*
+rm -f /etc/yum.repos.d/fedora*modular*
 
 # Set up time synchronization.
 sed -i 's/^#NTP=.*/NTP=clock.corp.redhat.com/' /etc/systemd/timesyncd.conf
@@ -81,7 +81,8 @@ systemctl enable systemd-timesyncd
 
 # Install netdata for performance monitoring.
 bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait \
-  --no-updates --disable-telemetry --stable-channel
+  --no-updates --disable-telemetry --stable-channel --dont-start-it > /dev/null
+systemctl enable netdata
 
 # Clean up.
 dnf -y clean all
