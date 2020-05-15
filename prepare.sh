@@ -36,11 +36,16 @@ fi
 # Upgrade system.
 dnf ${DNF_EXTRA_ARGS:-} -qy upgrade
 
+# Add extra packages depending on the OS.
+if [[ $ID == 'rhel' ]]; then
+  EXTRA_PACKAGES="systemd-timesyncd"
+fi
+
 # Install required packages for Jenkins and other jobs.
 dnf ${DNF_EXTRA_ARGS:-} -qy install \
-  ansible buildah createrepo_c dnf-plugins-core git htop \
+  ansible buildah chrony createrepo_c dnf-plugins-core git htop \
   java-1.8.0-openjdk-headless make mock podman policycoreutils-python-utils \
-  python3 python3-pip rpm-build vi vim xz
+  python3 python3-pip rpm-build vi vim xz ${EXTRA_PACKAGES:-}
 
 # Prepare the mock chroot.
 if [[ $PLATFORM_ID == "platform:el8" ]]; then
@@ -69,9 +74,14 @@ systemctl enable tmp.mount || systemctl unmask tmp.mount && systemctl start tmp.
 # Ensure modular repositories are removed.
 rm -fv /etc/yum.repos.d/fedora*modular*
 
-# Switch ssh to port 2222.
-# sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
-# semanage port -a -t ssh_port_t -p tcp 2222
+# Set up time synchronization.
+sed -i 's/^#NTP=.*/NTP=clock.corp.redhat.com/' /etc/systemd/timesyncd.conf
+systemctl disable chronyd || true
+systemctl enable systemd-timesyncd
+
+# Install netdata for performance monitoring.
+bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait \
+  --no-updates --disable-telemetry --stable-channel
 
 # Clean up.
 dnf -y clean all
