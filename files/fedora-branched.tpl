@@ -33,7 +33,7 @@ protected_packages=
 
 [fedora-internal]
 name=Fedora Internal
-baseurl=http://download01.phx2.fedoraproject.org/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/
+baseurl=http://download-rdu01.fedoraproject.org/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/
 enabled=1
 countme=1
 metadata_expire=7d
@@ -46,7 +46,7 @@ priority=5
 
 [updates-internal]
 name=Fedora Updates Internal
-baseurl=http://download01.phx2.fedoraproject.org/pub/fedora/linux/updates/$releasever/Everything/$basearch/
+baseurl=http://download-rdu01.fedoraproject.org/pub/fedora/linux/updates/$releasever/Everything/$basearch/
 enabled=1
 countme=1
 repo_gpgcheck=0
