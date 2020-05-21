@@ -21,6 +21,16 @@
         "destination": "/tmp/prepare.sh"
       },
       {
+        "type": "file",
+        "source": "files/fedora-internal.repo",
+        "destination": "/tmp/fedora-internal.repo"
+      },
+      {
+        "type": "file",
+        "source": "files/fedora-branched.tpl",
+        "destination": "/tmp/fedora-branched.tpl"
+      },
+      {
         "type": "shell",
         "inline": [
           "sudo /tmp/prepare.sh",
