@@ -1,4 +1,8 @@
 {
+    "variables": {
+      "RHN_USERNAME": "{{env `RHN_CREDS_USR`}}",
+      "RHN_PASSWORD": "{{env `RHN_CREDS_PSW`}}"
+    },
     "builders": [
         {
             "type": "openstack",
@@ -23,8 +27,8 @@
       {
         "type": "shell",
         "environment_vars": [
-          "RHN_USERNAME={{env `RHN_CREDS_USR`}}",
-          "RHN_PASSWORD={{env `RHN_CREDS_PSW`}}"
+          "RHN_USERNAME={{user `RHN_USERNAME`}}",
+          "RHN_PASSWORD={{user `RHN_PASSWORD`}}"
         ],
         "inline": [
           "sudo /tmp/prepare.sh",
