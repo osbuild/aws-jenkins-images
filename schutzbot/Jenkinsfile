@@ -1,6 +1,6 @@
 // Define the jobs for building VM images for CI.
 pipeline {
-    agent { label "fedora3 || fedora32" }
+    agent { label "fedora31 || fedora32" }
 
     options {
         timestamps()
