@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euxo pipefail
 
 # Get data from os-release
 source /etc/os-release
@@ -51,7 +51,7 @@ if [[ $ID == 'rhel' ]]; then
 fi
 
 # Add nightly RHEL 8.2 repositories.
-if [[ $HOSTNAME = "*rhel82*" ]]; then
+if [[ $HOSTNAME == "*rhel82*" ]]; then
   curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
     https://gitlab.cee.redhat.com/snippets/2143/raw
 
@@ -60,7 +60,7 @@ if [[ $HOSTNAME = "*rhel82*" ]]; then
 fi
 
 # Add nightly RHEL 8.3 repositories.
-if [[ $HOSTNAME = "*rhel83*" ]]; then
+if [[ $HOSTNAME == "*rhel83*" ]]; then
   curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
     https://gitlab.cee.redhat.com/snippets/2147/raw
 
