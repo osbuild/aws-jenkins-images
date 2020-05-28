@@ -1,0 +1,187 @@
+---
+
+- name: Prepare OpenStack image
+  hosts: all
+  become: yes
+  vars:
+    required_packages:
+      - ansible
+      - createrepo_c
+      - chrony
+      - dnf-plugins-core
+      - git
+      - java-1.8.0-openjdk-headless
+      - make
+      - mock
+      - podman
+      - policycoreutils-python-utils
+      - python3
+      - python3-pip
+      - python3-openstackclient
+      - rpm-build
+      - vi
+      - vim
+      - xz
+  tasks:
+
+    - name: Disable IPv6
+      sysctl:
+        name: net.ipv6.conf.all.disable_ipv6
+        value: "1"
+        state: present
+        sysctl_set: yes
+
+    - name: Deploy internal Fedora repositories
+      copy:
+        src: /tmp/fedora-internal.repo
+        dest: /etc/yum.repos.d/fedora-internal.repo
+        remote_src: yes
+      when:
+        - ansible_distribution == 'Fedora'
+
+    - name: Disable the sssd service
+      systemd:
+        name: sssd
+        state: stopped
+        enabled: no
+
+    - name: Subscribe the RHEL 8 CDN instance to staging RHN
+      redhat_subscription:
+        server_hostname: subscription.rhn.stage.redhat.com
+        username: "{{ lookup('env', 'RHN_USERNAME') }}"
+        password: "{{ lookup('env', 'RHN_PASSWORD') }}"
+        pool_ids:
+          - 8a99f9ac725604db017256b11f620666
+        state: present
+      when:
+        - "'rhel8cdn' in ansible_hostname"
+
+    - name: Enable repositorites from RHEL 8 CDN
+      rhsm_repository:
+        name:
+          - ansible-2.9-for-rhel-8-x86_64-rpms
+          - openstack-16-tools-for-rhel-8-x86_64-rpms
+      when:
+        - "'rhel8cdn' in ansible_hostname"
+
+    - name: Deploy repos for RHEL 8.2 nightly
+      get_url:
+        url: https://gitlab.cee.redhat.com/snippets/2143/raw
+        dest: /etc/yum.repos.d/rhel8nightly.repo
+        validate_certs: no
+      when:
+        - "'rhel82' in ansible_hostname"
+
+    - name: Deploy repos for RHEL 8.3 nightly
+      get_url:
+        url: https://gitlab.cee.redhat.com/snippets/2147/raw
+        dest: /etc/yum.repos.d/rhel8nightly.repo
+        validate_certs: no
+      when:
+        - "'rhel83' in ansible_hostname"
+
+    - name: Download EPEL repository RPM
+      get_url:
+        url: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        dest: /tmp/epel8.rpm
+      when:
+        - ansible_distribution == 'RedHat'
+
+    - name: Install EPEL repository
+      dnf:
+        name: /tmp/epel8.rpm
+        state: present
+      when:
+        - ansible_distribution == 'RedHat'
+
+    - name: Clean up EPEL 8 RPM
+      file:
+        path: /tmp/epel8.rpm
+        state: absent
+      when:
+        - ansible_distribution == 'RedHat'
+
+    - name: Disable Fedora modular repositories
+      ini_file:
+        path: "/etc/yum.repos.d/{{ item.repo }}"
+        section: "{{ item.repoid }}"
+        option: enabled
+        value: "1"
+      loop:
+        - repo: fedora-modular.repo
+          repoid: fedora-modular
+        - repo: fedora-updates-modular.repos
+          repoid: updates-modular
+      when:
+        - ansible_distribution == "Fedora"
+
+    - name: Upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: Install packages
+      dnf:
+        name: "{{ required_packages }}"
+        state: present
+
+    - name: Deploy updated Fedora mock templates
+      copy:
+        src: /tmp/fedora-branched.tpl
+        dest: /etc/mock/templates/fedora-branched.tpl
+        remote_src: yes
+      when:
+        - ansible_distribution == 'Fedora'
+
+    - name: Copy modified RHEL 8 nightly mock template
+      copy:
+        src: /tmp/rhel-8.tpl
+        dest: /etc/mock/templates/rhel-8.tpl
+      when:
+        - "'rhel82' in ansible_hostname or 'rhel83' in ansible_hostname"
+
+    - name: Add nightly RHEL 8 repositories to modified mock template
+      shell: |
+        cat /etc/yum.repos.d/rhel8nightly.repo | \
+          tee -a /etc/mock/templates/rhel-8.tpl
+      when:
+        - "'rhel82' in ansible_hostname or 'rhel83' in ansible_hostname"
+
+    - name: Set up a swapfile
+      command: "{{ item }}"
+      args:
+        warn: no
+      loop:
+        - fallocate -l 1G /swapfile
+        - chmod 0600 /swapfile
+        - mkswap /swapfile
+        - swapon /swapfile
+
+    - name: Add swap to /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "/swapfile none swap sw 0 0"
+        state: present
+
+    - name: Create a directory for Jenkins to use
+      file:
+        path: /jenkins
+        state: directory
+        mode: "0777"
+
+    - name: Mount a tmpfs on /tmp on boot
+      systemd:
+        name: tmp.mount
+        masked: no
+
+    - name: Add internal NTP server to chrony config
+      lineinfile:
+        path: /etc/chrony.conf
+        line: "pool clock.corp.redhat.com iburst"
+        regexp: "^pool"
+
+    - name: Start chrony at boot time
+      systemd:
+        name: chronyd
+        state: restarted
+        enabled: yes

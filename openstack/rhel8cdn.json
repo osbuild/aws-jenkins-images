@@ -20,19 +20,17 @@
     ],
     "provisioners": [
       {
-        "type": "file",
-        "source": "prepare-openstack.sh",
-        "destination": "/tmp/prepare.sh"
-      },
-      {
-        "type": "shell",
-        "environment_vars": [
-          "RHN_USERNAME={{user `RHN_USERNAME`}}",
-          "RHN_PASSWORD={{user `RHN_PASSWORD`}}"
-        ],
-        "inline": [
-          "sudo /tmp/prepare.sh",
-          "rm -f /tmp/prepare.sh"
+        "type": "ansible",
+        "playbook_file": "prepare-openstack.yml",
+        "ansible_env_vars": [
+          "ANSIBLE_FORCE_COLOR=True",
+          "ANSIBLE_LOAD_CALLBACK_PLUGINS=True",
+          "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
+          "ANSIBLE_STDOUT_CALLBACK=yaml",
+          "ANSIBLE_DEPRECATION_WARNINGS=False",
+          "ANSIBLE_PIPELINING=True",
+          "RHN_USERNAME={{user `RHN_USERNAME` }}",
+          "RHN_PASSWORD={{user `RHN_PASSWORD` }}"
         ]
       }
     ]
