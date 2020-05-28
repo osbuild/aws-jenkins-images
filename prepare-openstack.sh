@@ -26,7 +26,7 @@ fi
 systemctl disable --now sssd
 
 # Subscribe RHEL 8 if we're building a CDN image.
-if [[ $HOSTNAME == *"rhel8cdn*"* ]]; then
+if [[ $HOSTNAME == *"rhel8cdn"* ]]; then
   # Register the instance.
   subscription-manager register \
     --serverurl=subscription.rhn.stage.redhat.com \
