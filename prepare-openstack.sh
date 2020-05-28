@@ -30,8 +30,8 @@ if [[ $HOSTNAME == *"rhel8cdn"* ]]; then
   # Register the instance.
   subscription-manager register \
     --serverurl=subscription.rhn.stage.redhat.com \
-    --username $RHN_CREDS_USR \
-    --password $RHN_CREDS_PSW
+    --username $RHN_USERNAME \
+    --password $RHN_PASSWORD
   # Attach a basic RHEL subscription.
   subscription-manager attach --pool=8a99f9ac725604db017256b11f620666
   # For Ansible, of course.
