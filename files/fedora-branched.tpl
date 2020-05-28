@@ -4,7 +4,7 @@ config_opts['root'] = 'fedora-{{ releasever }}-{{ target_arch }}'
 
 # fedora 31+ isn't mirrored, we need to run from koji
 
-config_opts['chroot_setup_cmd'] = 'install @build'
+config_opts['chroot_setup_cmd'] = 'install @buildsys-build'
 
 config_opts['dist'] = 'fc{{ releasever }}'  # only useful for --resultdir variable subst
 config_opts['extra_chroot_dirs'] = [ '/run/lock', ]
