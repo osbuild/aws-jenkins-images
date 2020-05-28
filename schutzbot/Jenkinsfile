@@ -26,7 +26,9 @@ pipeline {
         }
 
         stage("Build images") {
-
+            environment {
+                RHN_CREDS = credentials("mhayden-staging-subscription-creds")
+            }
             // Build the images in parallel.
             failFast true
             parallel {

@@ -6,7 +6,7 @@
             "cloud": "psi",
             "image_name": "osbuildci-fedora32-{{isotime \"20060102-150405\"}}",
             "source_image": "a59fe026-2167-4ebf-aac8-0dadb08a7ad3",
-            "flavor": "m1.small",
+            "flavor": "ci.m1.small",
             "image_visibility": "private",
             "networks": [
                 "316eeb47-1498-46b4-b39e-00ddf73bd2a5"
