@@ -26,8 +26,7 @@ fi
 systemctl disable --now sssd
 
 # Subscribe RHEL 8 if we're building a CDN image.
-if [[ $HOSTNAME == "*rhel8cdn*" ]]; then
-
+if [[ $HOSTNAME == *"rhel8cdn*"* ]]; then
   # Register the instance.
   subscription-manager register \
     --serverurl=subscription.rhn.stage.redhat.com \
@@ -41,17 +40,8 @@ if [[ $HOSTNAME == "*rhel8cdn*" ]]; then
   subscription-manager repos --enable openstack-16-tools-for-rhel-8-x86_64-rpms
 fi
 
-# All RHEL images need EPEL for mock.
-if [[ $ID == 'rhel' ]]; then
-  # Add the EPEL repository.
-  curl --retry 5 -Lso /tmp/epel8.rpm \
-    https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-  rpm -Uvh --quiet /tmp/epel8.rpm
-  rm -f /tmp/epel8.rpm
-fi
-
 # Add nightly RHEL 8.2 repositories.
-if [[ $HOSTNAME == "*rhel82*" ]]; then
+if [[ $HOSTNAME == *"rhel82"* ]]; then
   curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
     https://gitlab.cee.redhat.com/snippets/2143/raw
 
@@ -60,12 +50,21 @@ if [[ $HOSTNAME == "*rhel82*" ]]; then
 fi
 
 # Add nightly RHEL 8.3 repositories.
-if [[ $HOSTNAME == "*rhel83*" ]]; then
+if [[ $HOSTNAME == *"rhel83"* ]]; then
   curl --retry 5 -kLso /etc/yum.repos.d/rhel8.repo \
     https://gitlab.cee.redhat.com/snippets/2147/raw
 
   # Update mock template.
   mv /tmp/rhel-8.tpl /etc/mock/templates/
+fi
+
+# All RHEL images need EPEL for mock.
+if [[ $ID == 'rhel' ]]; then
+  # Add the EPEL repository.
+  curl --retry 5 -Lso /tmp/epel8.rpm \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+  rpm -Uvh --quiet /tmp/epel8.rpm
+  rm -f /tmp/epel8.rpm
 fi
 
 # Upgrade and install packages.
