@@ -18,6 +18,7 @@ pipeline {
             // the same agent.
             environment {
                 OPENSTACK_CLOUDS_YAML = credentials("psi-openstack-clouds-yaml")
+                RHN_CREDS = credentials("mhayden-staging-subscription-creds")
             }
             steps {
                 sh "schutzbot/packer_install.sh"
@@ -42,9 +43,9 @@ pipeline {
                     }
                 }
 
-                stage("RHEL 8.2") {
+                stage("RHEL 8 CDN") {
                     steps {
-                        sh "packer.io build openstack/rhel82.json"
+                        sh "packer.io build openstack/rhel8cdn.json"
                     }
                 }
 

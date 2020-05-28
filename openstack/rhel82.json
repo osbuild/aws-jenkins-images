@@ -4,7 +4,7 @@
             "type": "openstack",
             "identity_endpoint": "https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3",
             "cloud": "psi",
-            "image_name": "osbuildci-rhel-82-{{isotime \"20060102-150405\"}}",
+            "image_name": "osbuildci-rhel82-{{isotime \"20060102-150405\"}}",
             "source_image": "4d81b2ae-1ab4-485f-b476-5704767e2eb8",
             "flavor": "ci.m1.small",
             "image_visibility": "private",
@@ -17,7 +17,7 @@
     "provisioners": [
       {
         "type": "file",
-        "source": "prepare.sh",
+        "source": "prepare-openstack.sh",
         "destination": "/tmp/prepare.sh"
       },
       {
