@@ -137,6 +137,7 @@
       copy:
         src: /tmp/rhel-8.tpl
         dest: /etc/mock/templates/rhel-8.tpl
+        remote_src: yes
       when:
         - "'rhel82' in ansible_hostname or 'rhel83' in ansible_hostname"
 
