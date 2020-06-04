@@ -11,6 +11,7 @@
       - dnf-plugins-core
       - git
       - java-1.8.0-openjdk-headless
+      - jq
       - make
       - mock
       - podman
@@ -123,6 +124,11 @@
     - name: Install packages
       dnf:
         name: "{{ required_packages }}"
+        state: present
+
+    - name: Install awscli
+      pip:
+        name: awscli
         state: present
 
     - name: Deploy updated Fedora mock templates
