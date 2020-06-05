@@ -126,9 +126,11 @@
         name: "{{ required_packages }}"
         state: present
 
-    - name: Install awscli
+    - name: Install awscli and s3cmd
       pip:
-        name: awscli
+        name:
+          - awscli
+          - s3cmd
         state: present
 
     - name: Deploy updated Fedora mock templates
