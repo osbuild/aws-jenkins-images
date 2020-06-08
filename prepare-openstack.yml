@@ -10,8 +10,22 @@
       - chrony
       - dnf-plugins-core
       - git
+      - htop
       - java-1.8.0-openjdk-headless
       - jq
+      - libvirt-client
+      - libvirt-daemon
+      - libvirt-daemon-config-network
+      - libvirt-daemon-config-nwfilter
+      - libvirt-daemon-driver-interface
+      - libvirt-daemon-driver-network
+      - libvirt-daemon-driver-nodedev
+      - libvirt-daemon-driver-nwfilter
+      - libvirt-daemon-driver-qemu
+      - libvirt-daemon-driver-secret
+      - libvirt-daemon-driver-storage
+      - libvirt-daemon-driver-storage-disk
+      - libvirt-daemon-kvm
       - make
       - mock
       - podman
@@ -19,9 +33,12 @@
       - python3
       - python3-pip
       - python3-openstackclient
+      - qemu-img
+      - qemu-kvm
       - rpm-build
       - vi
       - vim
+      - virt-install
       - xz
   tasks:
 
