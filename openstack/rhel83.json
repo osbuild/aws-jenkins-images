@@ -16,11 +16,6 @@
     ],
     "provisioners": [
       {
-        "type": "file",
-        "source": "files/rhel-8.tpl",
-        "destination": "/tmp/rhel-8.tpl"
-      },
-      {
         "type": "shell",
         "script": "prepare-openstack.sh"
       }

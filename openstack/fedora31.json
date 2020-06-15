@@ -21,11 +21,6 @@
         "destination": "/tmp/fedora-internal.repo"
       },
       {
-        "type": "file",
-        "source": "files/fedora-branched.tpl",
-        "destination": "/tmp/fedora-branched.tpl"
-      },
-      {
         "type": "shell",
         "script": "prepare-openstack.sh"
       }
