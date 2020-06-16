@@ -4,7 +4,7 @@
             "type": "openstack",
             "identity_endpoint": "https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3",
             "cloud": "psi",
-            "image_name": "osbuildci-rhel83-minimal-{{isotime \"20060102-150405\"}}",
+            "image_name": "osbuildci-rhel83-{{isotime \"20060102-150405\"}}",
             "source_image": "9bf16084-cd14-4052-a2e1-a66d6b70168d",
             "flavor": "ci.m1.small",
             "image_visibility": "private",

@@ -5,41 +5,41 @@
   become: yes
   vars:
     required_packages:
-      # - ansible
-      # - createrepo_c
+      - ansible
+      - createrepo_c
       - chrony
       - dnf-plugins-core
       - git
-      # - htop
+      - htop
       - java-1.8.0-openjdk-headless
-      # - jq
-      # - libvirt-client
-      # - libvirt-daemon
-      # - libvirt-daemon-config-network
-      # - libvirt-daemon-config-nwfilter
-      # - libvirt-daemon-driver-interface
-      # - libvirt-daemon-driver-network
-      # - libvirt-daemon-driver-nodedev
-      # - libvirt-daemon-driver-nwfilter
-      # - libvirt-daemon-driver-qemu
-      # - libvirt-daemon-driver-secret
-      # - libvirt-daemon-driver-storage
-      # - libvirt-daemon-driver-storage-disk
-      # - libvirt-daemon-kvm
-      # - make
-      # - mock
-      # - podman
-      # - policycoreutils-python-utils
-      # - python3
-      # - python3-pip
-      # - python3-openstackclient
-      # - qemu-img
-      # - qemu-kvm
-      # - rpm-build
-      # - vi
-      # - vim
-      # - virt-install
-      # - xz
+      - jq
+      - libvirt-client
+      - libvirt-daemon
+      - libvirt-daemon-config-network
+      - libvirt-daemon-config-nwfilter
+      - libvirt-daemon-driver-interface
+      - libvirt-daemon-driver-network
+      - libvirt-daemon-driver-nodedev
+      - libvirt-daemon-driver-nwfilter
+      - libvirt-daemon-driver-qemu
+      - libvirt-daemon-driver-secret
+      - libvirt-daemon-driver-storage
+      - libvirt-daemon-driver-storage-disk
+      - libvirt-daemon-kvm
+      - make
+      - mock
+      - podman
+      - policycoreutils-python-utils
+      - python3
+      - python3-pip
+      - python3-openstackclient
+      - qemu-img
+      - qemu-kvm
+      - rpm-build
+      - vi
+      - vim
+      - virt-install
+      - xz
   tasks:
 
     - name: Disable IPv6
@@ -143,12 +143,12 @@
         name: "{{ required_packages }}"
         state: present
 
-    # - name: Install awscli and s3cmd
-    #   pip:
-    #     name:
-    #       - awscli
-    #       - s3cmd
-    #     state: present
+    - name: Install awscli and s3cmd
+      pip:
+        name:
+          - awscli
+          - s3cmd
+        state: present
 
     - name: Deploy updated Fedora mock templates
       copy:
@@ -195,10 +195,10 @@
         state: directory
         mode: "0777"
 
-    # - name: Mount a tmpfs on /tmp on boot
-    #   systemd:
-    #     name: tmp.mount
-    #     masked: no
+    - name: Mount a tmpfs on /tmp on boot
+      systemd:
+        name: tmp.mount
+        masked: no
 
     - name: Add internal NTP server to chrony config
       lineinfile:

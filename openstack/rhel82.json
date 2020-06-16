@@ -1,15 +1,11 @@
 {
-    "variables": {
-      "RHN_USERNAME": "{{env `RHN_CREDS_USR`}}",
-      "RHN_PASSWORD": "{{env `RHN_CREDS_PSW`}}"
-    },
     "builders": [
         {
             "type": "openstack",
             "identity_endpoint": "https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3",
             "cloud": "psi",
-            "image_name": "osbuildci-rhel8cdn-{{isotime \"20060102-150405\"}}",
-            "source_image": "4ff950ca-51f9-4e65-8daf-1a97743fe0a8",
+            "image_name": "osbuildci-rhel82-{{isotime \"20060102-150405\"}}",
+            "source_image": "4d81b2ae-1ab4-485f-b476-5704767e2eb8",
             "flavor": "ci.m1.small",
             "image_visibility": "private",
             "networks": [
@@ -20,6 +16,11 @@
     ],
     "provisioners": [
       {
+        "type": "file",
+        "source": "files/rhel-8.tpl",
+        "destination": "/tmp/rhel-8.tpl"
+      },
+      {
         "type": "ansible",
         "playbook_file": "prepare-openstack.yml",
         "ansible_env_vars": [
@@ -28,9 +29,7 @@
           "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
           "ANSIBLE_STDOUT_CALLBACK=yaml",
           "ANSIBLE_DEPRECATION_WARNINGS=False",
-          "ANSIBLE_PIPELINING=True",
-          "RHN_USERNAME={{user `RHN_USERNAME` }}",
-          "RHN_PASSWORD={{user `RHN_PASSWORD` }}"
+          "ANSIBLE_PIPELINING=True"
         ]
       }
     ]
