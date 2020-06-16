@@ -48,6 +48,16 @@ sudo dnf -y upgrade
 # Install the minimal package set.
 sudo dnf -y install chrony git java-1.8.0-openjdk-headless
 
+# Deploy customized mock templates.
+if [[ $ID == fedora ]]; then
+    sudo cp /tmp/fedora-branched.tpl /etc/mock/templates/fedora-branched.tpl
+fi
+if [[ $(uname -n) =~ rhel83 ]]; then
+    sudo cp /tmp/rhel-8.tpl /etc/mock/templates/rhel-8.tpl
+    cat /etc/yum.repos.d/rhel8nightly.repo | \
+        sudo tee -a /etc/mock/templates/rhel-8.tpl
+fi
+
 # Set up a swapfile.
 sudo fallocate -l 1G /swapfile
 sudo chmod 0600 /swapfile
